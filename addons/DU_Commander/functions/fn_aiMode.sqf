@@ -9,40 +9,68 @@ if (isNull _old || {!alive _old}) exitWith
 };
 
 private _grp = group _old;
-private _pos = getPosATL _old;
-private _dir = getDir _old;
-private _loadout = getUnitLoadout _old;
 private _type = typeOf _old;
+private _uid = getPlayerUID _old;
 
 missionNamespace setVariable ["DU_Commander_Original", _old];
 missionNamespace setVariable ["DU_Commander_Group", _grp];
+missionNamespace setVariable ["DU_Commander_UID", _uid];
 
-private _proxy = _grp createUnit [_type, _pos, [], 0, "NONE"];
+private _proxyGroup = createGroup [side _old, true];
+private _proxy = _proxyGroup createUnit [_type, getPosATL _old, [], 0, "NONE"];
 
-_proxy setDir _dir;
-_proxy setUnitLoadout _loadout;
+_proxy setDir getDir _old;
+_proxy setUnitLoadout getUnitLoadout _old;
+_proxy setVariable ["DU_Commander_Proxy", true, true];
+_proxy setVariable ["DU_Commander_Original", _old, true];
+_proxy setVariable ["A3A_playerUID", _uid, true];
+_proxy setVariable ["owner", _old, true];
 _proxy allowDamage false;
 _proxy hideObjectGlobal true;
 _proxy enableSimulationGlobal true;
 
-_grp selectLeader _old;
-
-_old enableAI "ALL";
-_old setBehaviour "AWARE";
-_old setCombatMode "YELLOW";
-_old setSpeedMode "NORMAL";
-_old setFormation "WEDGE";
-_old setVariable ["DU_Commander_AI", true, true];
-_proxy setVariable ["DU_Commander_Proxy", true, true];
-
 missionNamespace setVariable ["DU_Commander_Proxy", _proxy];
+missionNamespace setVariable ["DU_Commander_ProxyGroup", _proxyGroup];
 missionNamespace setVariable ["DU_Commander_Active", true];
 
-[] spawn DU_fnc_hcBrain;
+_old setVariable ["DU_Commander_AI", true, true];
+_old enableAI "ALL";
 
 selectPlayer _proxy;
 
-_grp selectLeader _old;
-_old switchCamera "INTERNAL";
+waitUntil {sleep 0.1; player isEqualTo _proxy};
 
-hint "DU COMMANDER: AI ON\n\nТвой оригинальный персонаж теперь управляется AI.\nHC-группы получили автономный мозг.\n\nCtrl+F10 — перехватить управление обратно.";
+[
+    "Initialize",
+    [
+        player,
+        [side _old],
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+    ]
+] call BIS_fnc_EGSpectator;
+
+hint "DU COMMANDER: TACTICAL GHOST ON
+
+Твоё настоящее тело осталось под обычным AI.
+Ты сейчас призрак-наблюдатель.
+
+WASD / мышь — свободная камера.
+Ctrl+1 AUTO
+Ctrl+2 ЛЕЧЬ
+Ctrl+3 ВСТАТЬ
+Ctrl+4 WEDGE
+Ctrl+5 LINE
+Ctrl+6 COLUMN
+Ctrl+7 HOLD FIRE
+Ctrl+8 FIRE AT WILL
+Ctrl+9 ENGAGE AT WILL
+Ctrl+0 HOLD + ENGAGE
+
+Ctrl+F10 — вернуться в тело.";
