@@ -1,31 +1,57 @@
-if (!hasInterface) exitWith {};
 params [
+    ["_leader", objNull, [objNull]],
+    ["_group", grpNull, [grpNull]],
     ["_type", "", [""]],
     ["_pos", [], [[]]],
     ["_target", objNull, [objNull]]
 ];
 
-private _group = missionNamespace getVariable ["DU_Commander_Group", grpNull];
-if (isNull _group) exitWith {hint "DU: HC-отряд не выбран.";};
+if (isNull _leader || {!alive _leader} || {isNull _group}) exitWith {};
+if !(_leader isEqualTo leader _group) exitWith {};
 
-private _leader = leader _group;
-if (isNull _leader || {!alive _leader}) exitWith {hint "DU: лидер HC-отряда недоступен.";};
-
-private _owner = owner _leader;
-private _args = [_leader, _group, _type, _pos, _target];
-
-if (_owner <= 0) exitWith
+switch (_type) do
 {
-    hint "DU: AI-командир сейчас не локален клиенту, а сервер не сообщил owner.";
-};
+    case "MOVE":
+    {
+        if (_pos isEqualTo []) exitWith {};
+        _leader commandMove _pos;
+    };
 
-[_args] remoteExecCall ["DU_fnc_hcOrder", _owner, false];
+    case "ATTACK":
+    {
+        if (isNull _target) exitWith {};
+        _leader commandAttack _target;
+    };
 
-if (_type isEqualTo "MOVE") then
-{
-    player sideRadio ["DU_HC_ACK", format ["%1, движение к указанной позиции.", groupId _group]];
-}
-else
-{
-    player sideRadio ["DU_HC_ACK", format ["%1, приказ %2.", groupId _group, _type]];
+    case "STOP":
+    {
+        _leader commandStop _leader;
+    };
+
+    case "FOLLOW":
+    {
+        private _commander = missionNamespace getVariable ["theBoss", objNull];
+        if (isNull _commander) exitWith {};
+        _leader commandFollow _commander;
+    };
+
+    case "HOLD":
+    {
+        _leader commandStop _leader;
+    };
+
+    case "WEDGE":
+    {
+        _group setFormation "WEDGE";
+    };
+
+    case "LINE":
+    {
+        _group setFormation "LINE";
+    };
+
+    case "COLUMN":
+    {
+        _group setFormation "COLUMN";
+    };
 };
