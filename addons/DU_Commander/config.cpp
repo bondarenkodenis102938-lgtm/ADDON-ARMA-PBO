@@ -27,18 +27,6 @@ class CfgFunctions
             class takeControl {};
             class cleanup {};
             class hcMenu {};
-            class hcRelay {};
-            class hcOrder {};
         };
-    };
-};
-
-class CfgRadio
-{
-    class DU_HC_ACK
-    {
-        name = "DU_HC_ACK";
-        sound[] = {};
-        title = "%1";
     };
 };
