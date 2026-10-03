@@ -23,7 +23,7 @@ _proxy setDir _dir;
 _proxy setUnitLoadout _loadout;
 _proxy allowDamage false;
 _proxy hideObjectGlobal true;
-_proxy enableSimulationGlobal false;
+_proxy enableSimulationGlobal true;
 
 _grp selectLeader _old;
 
