@@ -4,5 +4,6 @@ missionNamespace setVariable ["DU_Commander_Active", false];
 missionNamespace setVariable ["DU_Commander_Group", grpNull];
 
 showCommandingMenu "";
+hcShowBar false;
 
-hint "DU Commander: интерфейс командования закрыт.\nAI и High Command Antistasi не изменены.";
+hint "DU Commander: режим командования закрыт.\nГруппы Antistasi не изменены.";
