@@ -35,14 +35,14 @@ private _g = missionNamespace getVariable ["DU_Commander_Group", grpNull];
 private _enabled = {!isNull _g && {alive leader _g}};
 
 _orderItems append [
-    ["ДВИЖЕНИЕ — сюда", [2], "", -5, [["expression", "['MOVE', _pos, objNull] call DU_fnc_hcOrder;"]], "1", str _enabled],
-    ["АТАКА — на цель", [3], "", -5, [["expression", "['ATTACK', _pos, _target] call DU_fnc_hcOrder;"]], "1", str (_enabled && {!isNull cursorObject})],
-    ["СТОП", [4], "", -5, [["expression", "['STOP', getPosATL leader (missionNamespace getVariable ['DU_Commander_Group', grpNull]), objNull] call DU_fnc_hcOrder;"]], "1", str _enabled],
-    ["СЛЕДОВАТЬ ЗА МНОЙ", [5], "", -5, [["expression", "['FOLLOW', getPosATL player, objNull] call DU_fnc_hcOrder;"]], "1", str _enabled],
-    ["УДЕРЖИВАТЬ ПОЗИЦИЮ", [6], "", -5, [["expression", "['HOLD', getPosATL leader (missionNamespace getVariable ['DU_Commander_Group', grpNull]), objNull] call DU_fnc_hcOrder;"]], "1", str _enabled],
-    ["КЛИН", [7], "", -5, [["expression", "['WEDGE', [], objNull] call DU_fnc_hcOrder;"]], "1", str _enabled],
-    ["ЛИНИЯ", [8], "", -5, [["expression", "['LINE', [], objNull] call DU_fnc_hcOrder;"]], "1", str _enabled],
-    ["КОЛОННА", [9], "", -5, [["expression", "['COLUMN', [], objNull] call DU_fnc_hcOrder;"]], "1", str _enabled]
+    ["ДВИЖЕНИЕ — сюда", [2], "", -5, [["expression", "['MOVE', _pos, objNull] call DU_fnc_hcRelay;"]], "1", str _enabled],
+    ["АТАКА — на цель", [3], "", -5, [["expression", "['ATTACK', _pos, _target] call DU_fnc_hcRelay;"]], "1", str (_enabled && {!isNull cursorObject})],
+    ["СТОП", [4], "", -5, [["expression", "['STOP', getPosATL leader (missionNamespace getVariable ['DU_Commander_Group', grpNull]), objNull] call DU_fnc_hcRelay;"]], "1", str _enabled],
+    ["СЛЕДОВАТЬ ЗА МНОЙ", [5], "", -5, [["expression", "['FOLLOW', getPosATL player, objNull] call DU_fnc_hcRelay;"]], "1", str _enabled],
+    ["УДЕРЖИВАТЬ ПОЗИЦИЮ", [6], "", -5, [["expression", "['HOLD', getPosATL leader (missionNamespace getVariable ['DU_Commander_Group', grpNull]), objNull] call DU_fnc_hcRelay;"]], "1", str _enabled],
+    ["КЛИН", [7], "", -5, [["expression", "['WEDGE', [], objNull] call DU_fnc_hcRelay;"]], "1", str _enabled],
+    ["ЛИНИЯ", [8], "", -5, [["expression", "['LINE', [], objNull] call DU_fnc_hcRelay;"]], "1", str _enabled],
+    ["КОЛОННА", [9], "", -5, [["expression", "['COLUMN', [], objNull] call DU_fnc_hcRelay;"]], "1", str _enabled]
 ];
 
 DU_HC_SELECT = _selectItems;
