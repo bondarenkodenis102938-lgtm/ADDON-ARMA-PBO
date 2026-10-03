@@ -26,7 +26,7 @@ class CfgFunctions
             class aiMode {};
             class takeControl {};
             class cleanup {};
-            class hcBrain {};
+            class tacticalCommand {};
         };
     };
 };
