@@ -38,9 +38,11 @@ _proxy setVariable ["DU_Commander_Proxy", true, true];
 missionNamespace setVariable ["DU_Commander_Proxy", _proxy];
 missionNamespace setVariable ["DU_Commander_Active", true];
 
+[] spawn DU_fnc_hcBrain;
+
 selectPlayer _proxy;
 
 _grp selectLeader _old;
 _old switchCamera "INTERNAL";
 
-hint "DU COMMANDER: AI ON\n\nТвой оригинальный персонаж теперь управляется AI.\n\nF10 — перехватить управление обратно.";
+hint "DU COMMANDER: AI ON\n\nТвой оригинальный персонаж теперь управляется AI.\nHC-группы получили автономный мозг.\n\nCtrl+F10 — перехватить управление обратно.";
