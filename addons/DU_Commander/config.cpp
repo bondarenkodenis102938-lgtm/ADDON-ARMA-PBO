@@ -21,15 +21,12 @@ class CfgFunctions
         {
             file = "du_commander\\functions";
 
-            class init
-            {
-                postInit = 1;
-            };
-
+            class init { postInit = 1; };
             class toggle {};
             class aiMode {};
             class takeControl {};
             class cleanup {};
+            class hcBrain {};
         };
     };
 };
