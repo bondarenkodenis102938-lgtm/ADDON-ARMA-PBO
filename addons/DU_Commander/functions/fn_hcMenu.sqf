@@ -39,7 +39,7 @@ _orderItems append [
     ["ДВИЖЕНИЕ — сюда", [2], "", -5, [["expression", "['MOVE', _pos, objNull] call DU_fnc_hcRelay;"]], "1", _enabledText],
     ["АТАКА — на цель", [3], "", -5, [["expression", "['ATTACK', _pos, _target] call DU_fnc_hcRelay;"]], "1", _enabledText],
     ["СТОП", [4], "", -5, [["expression", "['STOP', getPosATL leader (missionNamespace getVariable ['DU_Commander_Group', grpNull]), objNull] call DU_fnc_hcRelay;"]], "1", _enabledText],
-    ["СЛЕДОВАТЬ ЗА МНОЙ", [5], "", -5, [["expression", "['FOLLOW', getPosATL player, objNull] call DU_fnc_hcRelay;"]], "1", str _enabled],
+    ["СЛЕДОВАТЬ ЗА МНОЙ", [5], "", -5, [["expression", "['FOLLOW', getPosATL player, objNull] call DU_fnc_hcRelay;"]], "1", _enabledText],
     ["УДЕРЖИВАТЬ ПОЗИЦИЮ", [6], "", -5, [["expression", "['HOLD', getPosATL leader (missionNamespace getVariable ['DU_Commander_Group', grpNull]), objNull] call DU_fnc_hcRelay;"]], "1", str _enabled],
     ["КЛИН", [7], "", -5, [["expression", "['WEDGE', [], objNull] call DU_fnc_hcRelay;"]], "1", str _enabled],
     ["ЛИНИЯ", [8], "", -5, [["expression", "['LINE', [], objNull] call DU_fnc_hcRelay;"]], "1", str _enabled],
