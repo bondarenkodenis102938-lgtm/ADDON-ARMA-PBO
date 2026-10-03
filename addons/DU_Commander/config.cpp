@@ -26,7 +26,19 @@ class CfgFunctions
             class aiMode {};
             class takeControl {};
             class cleanup {};
-            class hcBrain {};
+            class hcMenu {};
+            class hcRelay {};
+            class hcOrder {};
         };
+    };
+};
+
+class CfgRadio
+{
+    class DU_HC_ACK
+    {
+        name = "DU_HC_ACK";
+        sound[] = {};
+        title = "%1";
     };
 };
