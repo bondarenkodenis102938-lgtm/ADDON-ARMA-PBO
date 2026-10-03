@@ -1,0 +1,61 @@
+name: Build DU Commander PBO
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build PBO
+        run: |
+          python3 - <<'PY'
+          import os,struct
+          root="addons/DU_Commander"; out="DU_Commander.pbo"; files=[]
+          for base,dirs,names in os.walk(root):
+              dirs.sort(); names.sort()
+              for n in names:
+                  if n=="$PBOPREFIX$": continue
+                  p=os.path.join(base,n)
+                  with open(p,"rb") as f: data=f.read()
+                  files.append((os.path.relpath(p,root).replace(os.sep,"/"),data))
+          files.sort()
+          def u32(n): return struct.pack("<I",n)
+          def entry(name,size): return name.encode()+b"\0"+b"\0"*4+u32(size)+b"\0"*8+u32(size)
+          h=b"\0Vers"+b"\0"*20+b"prefix\0du_commander\0product\0Arma 3\0\0"
+          for name,data in files: h+=entry(name,len(data))
+          h+=b"\0"*21
+          with open(out,"wb") as f:
+              f.write(h)
+              for _,data in files: f.write(data)
+          print("built",out,os.path.getsize(out))
+          PY
+      - name: Validate PBO
+        run: |
+          python3 - <<'PY'
+          import struct
+          b=open("DU_Commander.pbo","rb").read(); pos=25
+          while b[pos]:
+              e=b.index(0,pos); pos=e+1; e=b.index(0,pos); pos=e+1
+          pos+=1; total=0
+          while True:
+              e=b.index(0,pos); name=b[pos:e].decode(); pos=e+1
+              if not name: pos+=20; break
+              f=struct.unpack_from("<IIIII",b,pos); pos+=20; total+=f[4]
+          assert len(b)-pos==total, (len(b),pos,total)
+          print("PBO VALID",len(b),total)
+          PY
+      - name: Upload PBO
+        uses: actions/upload-artifact@v4
+        with:
+          name: DU_Commander_PBO
+          path: DU_Commander.pbo
+      - name: Remove temporary workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/build-pbo.yml
+          git commit -m "Remove temporary PBO build workflow"
+          git push
