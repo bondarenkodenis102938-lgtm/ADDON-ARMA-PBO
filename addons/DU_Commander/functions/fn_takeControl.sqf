@@ -11,8 +11,13 @@ if (isNull _old || {!alive _old}) exitWith
     hint "DU Commander: AI-командир погиб, управление вернуть нельзя.";
 };
 
+missionNamespace setVariable ["DU_Commander_Active", false];
+
 _old setVariable ["DU_Commander_AI", false, true];
 _old enableAI "ALL";
+_old setBehaviour "AWARE";
+_old setCombatMode "YELLOW";
+_old setSpeedMode "NORMAL";
 
 selectPlayer _old;
 _old switchCamera "INTERNAL";
@@ -30,6 +35,5 @@ if (!isNull _proxy) then
 missionNamespace setVariable ["DU_Commander_Proxy", objNull];
 missionNamespace setVariable ["DU_Commander_Original", _old];
 missionNamespace setVariable ["DU_Commander_Group", _grp];
-missionNamespace setVariable ["DU_Commander_Active", false];
 
 hint "DU COMMANDER: УПРАВЛЕНИЕ ВОЗВРАЩЕНО\n\nТы снова управляешь своим командиром.";
