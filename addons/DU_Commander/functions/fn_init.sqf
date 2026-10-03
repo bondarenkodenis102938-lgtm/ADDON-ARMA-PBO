@@ -9,6 +9,7 @@ missionNamespace setVariable ["DU_Commander_Active", false];
 missionNamespace setVariable ["DU_Commander_Original", objNull];
 missionNamespace setVariable ["DU_Commander_Proxy", objNull];
 missionNamespace setVariable ["DU_Commander_Group", grpNull];
+missionNamespace setVariable ["DU_Commander_KeyLock", false];
 
 private _display = findDisplay 46;
 
@@ -18,10 +19,29 @@ if (!isNull _display) then
     {
         params ["_display", "_key", "_shift", "_ctrl", "_alt"];
 
-        if (_key isEqualTo 0x44) exitWith
+        if (_key isEqualTo 0x44 && {_ctrl} && {!_shift} && {!_alt}) then
         {
-            [] call DU_fnc_toggle;
+            if !(missionNamespace getVariable ["DU_Commander_KeyLock", false]) then
+            {
+                missionNamespace setVariable ["DU_Commander_KeyLock", true];
+                [] call DU_fnc_toggle;
+            };
+
             true
+        }
+        else
+        {
+            false
+        };
+    }];
+
+    _display displayAddEventHandler ["KeyUp",
+    {
+        params ["_display", "_key"];
+
+        if (_key isEqualTo 0x44) then
+        {
+            missionNamespace setVariable ["DU_Commander_KeyLock", false];
         };
 
         false
@@ -47,4 +67,4 @@ if (!isNull _display) then
     };
 };
 
-hint "DU Commander загружен.\n\nF10 — AI-командир ON/OFF";
+hint "DU Commander загружен.\n\nCtrl+F10 — AI-командир ON/OFF";
