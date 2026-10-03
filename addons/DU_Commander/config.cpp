@@ -19,7 +19,7 @@ class CfgFunctions
 
         class Commander
         {
-            file = "du_commander\\functions";
+            file = "\du_commander\functions";
 
             class init { postInit = 1; };
             class toggle {};
