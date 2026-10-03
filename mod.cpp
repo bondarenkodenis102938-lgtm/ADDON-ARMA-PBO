@@ -1,0 +1,13 @@
+name = "DU Commander";
+picture = "";
+actionName = "";
+action = "";
+description = "AI Commander with instant player takeover";
+logo = "";
+logoOver = "";
+logoSmall = "";
+tooltip = "DU Commander";
+tooltipOwned = "DU Commander";
+overview = "Turns the player's original character into an AI commander and allows taking control back with F10.";
+author = "DU";
+overviewPicture = "";
