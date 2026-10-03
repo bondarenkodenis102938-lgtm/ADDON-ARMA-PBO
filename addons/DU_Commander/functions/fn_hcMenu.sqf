@@ -1,57 +1,36 @@
 if (!hasInterface) exitWith {};
 if !(missionNamespace getVariable ["DU_Commander_Active", false]) exitWith {};
 
-private _commander = if (!isNull (missionNamespace getVariable ["theBoss", objNull])) then {theBoss} else {player};
+private _commander = player;
 private _groups = hcAllGroups _commander;
 _groups = _groups select {alive leader _x && {side _x == side _commander}};
 
 if (_groups isEqualTo []) exitWith
 {
-    hint "DU Commander: HC-отрядов больше нет.";
+    hint "DU Commander: у игрока сейчас нет доступных HC-отрядов.";
     [] call DU_fnc_cleanup;
 };
 
-private _selectItems = [["DU: ВЫБОР HC-ОТРЯДА", true]];
-private _orderItems = [["DU: ПРИКАЗЫ AI-КОМАНДИРУ", true]];
+private _items = [["DU COMMANDER — выбор существующего HC", true]];
 
 {
     private _g = _x;
     private _leader = leader _g;
     private _label = format ["%1 — %2 (%3)", groupId _g, name _leader, count units _g];
-    private _idx = _forEachIndex + 2;
 
-    _selectItems pushBack [
+    _items pushBack [
         _label,
-        [_idx],
+        [_forEachIndex + 2],
         "",
         -5,
-        [["expression", format ["missionNamespace setVariable ['DU_Commander_Group', %1]; hint 'DU: выбран %2';", _g, _label]]],
+        [["expression", format [
+            "private _g = %1; missionNamespace setVariable ['DU_Commander_Group', _g]; hcSelectGroup [player, _g]; hcShowBar true; showCommandingMenu 'RscMainMenu';",
+            _g
+        ]]],
         "1",
         "1"
     ];
 } forEach _groups;
 
-private _g = missionNamespace getVariable ["DU_Commander_Group", grpNull];
-private _enabled = !isNull _g && {alive leader _g};
-private _enabledText = if (_enabled) then {"1"} else {"0"};
-
-_orderItems append [
-    ["ДВИЖЕНИЕ — сюда", [2], "", -5, [["expression", "['MOVE', _pos, objNull] call DU_fnc_hcRelay;"]], "1", _enabledText],
-    ["АТАКА — на цель", [3], "", -5, [["expression", "['ATTACK', _pos, _target] call DU_fnc_hcRelay;"]], "1", _enabledText],
-    ["СТОП", [4], "", -5, [["expression", "['STOP', getPosATL leader (missionNamespace getVariable ['DU_Commander_Group', grpNull]), objNull] call DU_fnc_hcRelay;"]], "1", _enabledText],
-    ["СЛЕДОВАТЬ ЗА МНОЙ", [5], "", -5, [["expression", "['FOLLOW', getPosATL player, objNull] call DU_fnc_hcRelay;"]], "1", _enabledText],
-    ["УДЕРЖИВАТЬ ПОЗИЦИЮ", [6], "", -5, [["expression", "['HOLD', getPosATL leader (missionNamespace getVariable ['DU_Commander_Group', grpNull]), objNull] call DU_fnc_hcRelay;"]], "1", str _enabled],
-    ["КЛИН", [7], "", -5, [["expression", "['WEDGE', [], objNull] call DU_fnc_hcRelay;"]], "1", str _enabled],
-    ["ЛИНИЯ", [8], "", -5, [["expression", "['LINE', [], objNull] call DU_fnc_hcRelay;"]], "1", str _enabled],
-    ["КОЛОННА", [9], "", -5, [["expression", "['COLUMN', [], objNull] call DU_fnc_hcRelay;"]], "1", str _enabled]
-];
-
-DU_HC_SELECT = _selectItems;
-DU_HC_ORDERS = _orderItems;
-DU_HC_MAIN = [
-    ["DU COMMANDER — существующий Antistasi HC", true],
-    ["Выбрать AI-командира", [2], "#USER:DU_HC_SELECT", -5, [["expression", ""]], "1", "1"],
-    ["Отдать приказ AI-командиру", [3], "#USER:DU_HC_ORDERS", -5, [["expression", ""]], "1", str _enabled]
-];
-
-showCommandingMenu "#USER:DU_HC_MAIN";
+DU_HC_SELECT = _items;
+showCommandingMenu "#USER:DU_HC_SELECT";
