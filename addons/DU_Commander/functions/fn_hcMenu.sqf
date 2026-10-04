@@ -26,7 +26,7 @@ private _items = [["DU COMMANDER — выбор существующего HC", 
         "",
         -5,
         [["expression",
-            "private _groups = missionNamespace getVariable ['DU_HC_GROUPS', []]; private _index = (_this select 1) - 2; if (_index >= 0 && {_index < count _groups}) then { private _g = _groups select _index; missionNamespace setVariable ['DU_Commander_Group', _g]; hcSelectGroup [player, _g]; hcShowBar true; showCommandingMenu 'RscMainMenu'; };"
+            format ["private _groups = missionNamespace getVariable ['DU_HC_GROUPS', []]; private _index = %1; if (_index >= 0 && {_index < count _groups}) then { private _g = _groups select _index; missionNamespace setVariable ['DU_Commander_Group', _g]; hcSelectGroup [player, _g]; hcShowBar true; showCommandingMenu 'RscMainMenu'; };", _forEachIndex]
         ]],
         "1",
         "1"
