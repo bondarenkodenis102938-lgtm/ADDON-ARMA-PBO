@@ -104,3 +104,26 @@ Cause:
 Fix:
 - `DU_Guardian_Display` is now stored/read through `uiNamespace`.
 - Do not move this display reference back to a mission/global namespace.
+
+## Native HC bootstrap fix
+
+Observed in-game:
+- DU hotkey/input handler responds.
+- Remote HC entry did not produce the native High Command UI/command state.
+
+Root cause identified:
+- Antistasi registers real groups with `theBoss hcSetGroup`, but the mission does not guarantee that the vanilla Arma High Command scope/UI has been initialized for the player.
+- `hcAllGroups` can therefore be useful as a roster while the actual HC command UI is not active.
+
+Fix:
+- `features/02_native_hc/fn_nativePrepare.sqf` now bootstraps the vanilla `HighCommand` logic only when `BIS_HC_mainscope` is absent.
+- It executes BIS's own `\\A3\\modules_f\\HC\\data\\scripts\\hc.sqf` rather than copying or replacing the command system.
+- The existing real Antistasi group is then registered/selected with native HC and `hcShowBar true` is applied.
+- The created object is High Command infrastructure, not a player proxy, AI commander, or second AI brain.
+- Bootstrap wait is bounded to 5 seconds to avoid a stuck mission if the engine fails to initialize HC.
+
+Remaining in-game verification:
+1. Ctrl+F10 should now enter Remote HC and show the native HC bar.
+2. Left Ctrl+Space should toggle native HC command mode normally.
+3. F1/F2/... should select real Antistasi groups.
+4. Native map orders should work without DU implementing command relays.
