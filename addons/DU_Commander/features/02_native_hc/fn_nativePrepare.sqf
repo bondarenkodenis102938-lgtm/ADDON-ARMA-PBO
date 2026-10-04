@@ -54,9 +54,9 @@ if (isNull _scope) then {
     */
     private _deadline = diag_tickTime + 5;
     waitUntil {
-        !isNull _scope
-        && {!isNil "HC_lastUnitReporting"}
-    } || {diag_tickTime > _deadline};
+        (!isNull _scope && {!isNil "HC_lastUnitReporting"})
+        || {diag_tickTime > _deadline}
+    };
 };
 
 /*
