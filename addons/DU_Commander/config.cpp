@@ -46,6 +46,12 @@ class CfgFunctions
             class guardianStart {};
             class guardianStop {};
         };
+
+        class Idea04_Diagnostics
+        {
+            file = "\du_commander\features\04_diagnostics";
+            class traceOrder {};
+        };
     };
 };
 
