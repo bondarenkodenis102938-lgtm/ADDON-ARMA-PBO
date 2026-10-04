@@ -1,8 +1,26 @@
 @echo off
-echo DU Commander PBO builder
+setlocal
+
+set "SOURCE=%~dp0addons\DU_Commander"
+set "DEST=%~dp0@DU_Commander\addons"
+
+if not exist "%SOURCE%\config.cpp" (
+    echo ERROR: Source addon not found:
+    echo %SOURCE%
+    exit /b 1
+)
+
+if not exist "%DEST%" mkdir "%DEST%"
+
 echo.
-echo Use Arma 3 Tools - Addon Builder:
-echo Source: addons\DU_Commander
-echo Destination: @DU_Commander\addons
+echo DU Commander - Addon Builder
+echo Source:      %SOURCE%
+echo Destination: %DEST%
+echo.
+echo Use Arma 3 Tools Addon Builder with:
+echo   Addon source directory: %SOURCE%
+echo   Destination:           %DEST%
+echo   Addon prefix:           du_commander
+echo   List of files to copy directly: *.sqf
 echo.
 pause
