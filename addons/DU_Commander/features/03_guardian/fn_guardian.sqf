@@ -40,9 +40,15 @@ if (isNull DU_Guardian_Camera) then {
     _camera camPrepareFOV 0.75;
 
     DU_Guardian_Camera = _camera;
-    DU_Guardian_Display = findDisplay 46;
 
-    private _display = DU_Guardian_Display;
+    /*
+        DISPLAY objects are UI-only engine handles. Store this reference in
+        uiNamespace instead of missionNamespace so Arma does not try to
+        serialize it into the mission state.
+    */
+    uiNamespace setVariable ["DU_Guardian_Display", findDisplay 46];
+
+    private _display = uiNamespace getVariable ["DU_Guardian_Display", displayNull];
 
     DU_Guardian_KeyDownEH = _display displayAddEventHandler ["KeyDown", {
         params ["_display", "_key"];
@@ -197,7 +203,7 @@ if (isNull DU_Guardian_Camera) then {
     private _camera = DU_Guardian_Camera;
     DU_Guardian_Camera = objNull;
 
-    private _display = DU_Guardian_Display;
+    private _display = uiNamespace getVariable ["DU_Guardian_Display", displayNull];
 
     if (!isNull _display) then {
         if (DU_Guardian_KeyDownEH >= 0) then {
@@ -222,7 +228,7 @@ if (isNull DU_Guardian_Camera) then {
         camDestroy _camera;
     };
 
-    DU_Guardian_Display = displayNull;
+    uiNamespace setVariable ["DU_Guardian_Display", displayNull];
     DU_Guardian_KeyDownEH = -1;
     DU_Guardian_KeyUpEH = -1;
     DU_Guardian_MouseEH = -1;
