@@ -21,7 +21,11 @@ DU_PreviousHCBar = false;
 DU_PreviousHCSelection = [];
 
 DU_Guardian_Camera = objNull;
-DU_Guardian_Display = displayNull;
+/*
+    DISPLAY is an engine UI object and must NOT live in missionNamespace.
+    Keep this UI-only reference in uiNamespace to avoid serialization warnings.
+*/
+uiNamespace setVariable ["DU_Guardian_Display", displayNull];
 DU_Guardian_KeyDownEH = -1;
 DU_Guardian_KeyUpEH = -1;
 DU_Guardian_MouseEH = -1;
