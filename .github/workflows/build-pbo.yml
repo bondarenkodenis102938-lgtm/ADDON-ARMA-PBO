@@ -1,0 +1,35 @@
+name: Build DU Commander PBO
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pkg-config libssl-dev
+          cargo install armake2 --version 0.3.0 --locked
+
+      - name: Pack PBO
+        run: |
+          armake2 pack -f addons/DU_Commander DU_Commander.pbo
+          armake2 inspect DU_Commander.pbo
+
+      - name: Upload PBO
+        uses: actions/upload-artifact@v4
+        with:
+          name: DU_Commander_PBO
+          path: DU_Commander.pbo
+          if-no-files-found: error
