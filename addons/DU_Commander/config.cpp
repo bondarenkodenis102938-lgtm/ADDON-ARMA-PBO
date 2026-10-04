@@ -22,50 +22,32 @@ class CfgFunctions
             file = "\du_commander\functions";
             class init { postInit = 1; };
             class toggle {};
-            class close {};
             class refresh {};
         };
 
-        class Idea01_Link
+        class RemoteHC
         {
-            file = "\du_commander\features\01_link";
-            class linkToGroup {};
-            class validateLink {};
+            file = "\du_commander\features\01_remote_hc";
+            class remoteStart {};
+            class remoteStop {};
         };
 
-        class Idea02_Command
+        class NativeHC
         {
-            file = "\du_commander\features\02_command";
-            class issueOrder {};
-            class applyOrder {};
+            file = "\du_commander\features\02_native_hc";
+            class nativePrepare {};
         };
 
-        class Idea03_Guardian
+        class Guardian
         {
             file = "\du_commander\features\03_guardian";
-            class guardianStart {};
-            class guardianStop {};
+            class guardian {};
         };
 
-        class Idea04_Diagnostics
+        class Selection
         {
-            file = "\du_commander\features\04_diagnostics";
-            class traceOrder {};
-        };
-    };
-};
-
-class CfgRemoteExec
-{
-    class Functions
-    {
-        mode = 2;
-        jip = 0;
-
-        class DU_fnc_applyOrder
-        {
-            allowedTargets = 0;
-            jip = 0;
+            file = "\du_commander\features\04_selection";
+            class onSelectionChanged {};
         };
     };
 };
