@@ -1,49 +1,28 @@
 if (!hasInterface) exitWith {};
+if (missionNamespace getVariable ["DU_Initialized", false]) exitWith {};
 
-[] spawn
-{
-    waitUntil {!isNull player && {!isNull findDisplay 46}};
+DU_Initialized = true;
+DU_Active = false;
+DU_HC_GROUPS = [];
+DU_Commander_Group = grpNull;
+DU_Commander_Leader = objNull;
+DU_Link_UID = "";
+DU_Guardian_Active = false;
+DU_Guardian_Camera = objNull;
+DU_Guardian_Token = 0;
 
-    if (missionNamespace getVariable ["DU_Commander_Initialized", false]) exitWith {};
+waitUntil {!isNull player && {!isNull (findDisplay 46)}};
 
-    missionNamespace setVariable ["DU_Commander_Initialized", true];
-    missionNamespace setVariable ["DU_Commander_Active", false];
-    missionNamespace setVariable ["DU_Commander_Group", grpNull];
-    missionNamespace setVariable ["DU_Commander_KeyLock", false];
-    missionNamespace setVariable ["DU_HC_GROUPS", []];
+private _display = findDisplay 46;
+_display displayAddEventHandler ["KeyDown", {
+    params ["_display", "_key", "_shift", "_ctrl", "_alt"];
 
-    private _display = findDisplay 46;
-
-    _display displayAddEventHandler ["KeyDown",
-    {
-        params ["_display", "_key", "_shift", "_ctrl", "_alt"];
-
-        if (_key isEqualTo 0x44 && {_ctrl} && {!_shift} && {!_alt}) then
-        {
-            if !(missionNamespace getVariable ["DU_Commander_KeyLock", false]) then
-            {
-                missionNamespace setVariable ["DU_Commander_KeyLock", true];
-                [] call DU_fnc_toggle;
-            };
-            true
-        }
-        else
-        {
-            false
-        };
-    }];
-
-    _display displayAddEventHandler ["KeyUp",
-    {
-        params ["_display", "_key"];
-
-        if (_key isEqualTo 0x44) then
-        {
-            missionNamespace setVariable ["DU_Commander_KeyLock", false];
-        };
-
+    if (_ctrl && {_key isEqualTo 0x44}) then {
+        [] call DU_fnc_toggle;
+        true
+    } else {
         false
-    }];
+    };
+}];
 
-    hint "DU Commander загружен.\n\nCtrl+F10 — командование существующими Antistasi HC-отрядами.";
-};
+hint "DU Commander rewrite loaded. Ctrl+F10 toggles the first exposed HC group and Guardian test state.";

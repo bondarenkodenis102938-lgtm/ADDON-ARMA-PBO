@@ -17,16 +17,49 @@ class CfgFunctions
     {
         tag = "DU";
 
-        class Commander
+        class Core
         {
             file = "\du_commander\functions";
-
             class init { postInit = 1; };
             class toggle {};
-            class aiMode {};
-            class takeControl {};
-            class cleanup {};
-            class hcMenu {};
+            class close {};
+            class refresh {};
+        };
+
+        class Idea01_Link
+        {
+            file = "\du_commander\features\01_link";
+            class linkToGroup {};
+            class validateLink {};
+        };
+
+        class Idea02_Command
+        {
+            file = "\du_commander\features\02_command";
+            class issueOrder {};
+            class applyOrder {};
+        };
+
+        class Idea03_Guardian
+        {
+            file = "\du_commander\features\03_guardian";
+            class guardianStart {};
+            class guardianStop {};
+        };
+    };
+};
+
+class CfgRemoteExec
+{
+    class Functions
+    {
+        mode = 2;
+        jip = 0;
+
+        class DU_fnc_applyOrder
+        {
+            allowedTargets = 0;
+            jip = 0;
         };
     };
 };
