@@ -52,10 +52,11 @@ if (isNull _scope) then {
         hc.sqf initializes asynchronously. Give the native UI a moment to
         install its local state before selecting/showing the group.
     */
+    private _deadline = diag_tickTime + 5;
     waitUntil {
         !isNull _scope
         && {!isNil "HC_lastUnitReporting"}
-    };
+    } || {diag_tickTime > _deadline};
 };
 
 /*
