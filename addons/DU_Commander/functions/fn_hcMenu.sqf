@@ -11,6 +11,8 @@ if (_groups isEqualTo []) exitWith
     [] call DU_fnc_cleanup;
 };
 
+missionNamespace setVariable ["DU_HC_GROUPS", _groups];
+
 private _items = [["DU COMMANDER — выбор существующего HC", true]];
 
 {
@@ -23,10 +25,9 @@ private _items = [["DU COMMANDER — выбор существующего HC", 
         [_forEachIndex + 2],
         "",
         -5,
-        [["expression", format [
-            "private _g = %1; missionNamespace setVariable ['DU_Commander_Group', _g]; hcSelectGroup [player, _g]; hcShowBar true; showCommandingMenu 'RscMainMenu';",
-            _g
-        ]]],
+        [["expression",
+            "private _groups = missionNamespace getVariable ['DU_HC_GROUPS', []]; private _index = (_this select 1) - 2; if (_index >= 0 && {_index < count _groups}) then { private _g = _groups select _index; missionNamespace setVariable ['DU_Commander_Group', _g]; hcSelectGroup [player, _g]; hcShowBar true; showCommandingMenu 'RscMainMenu'; };"
+        ]],
         "1",
         "1"
     ];
