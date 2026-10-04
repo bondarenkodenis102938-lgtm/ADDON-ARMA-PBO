@@ -91,3 +91,16 @@ If native HC works, only improve:
 - optional non-invasive HUD.
 
 Do not reintroduce the discarded command gateway.
+
+## Runtime warning fixed
+
+Arma reported:
+`Variable 'DU_Guardian_Display' does not support serialization and should not be stored in the mission namespace.`
+
+Cause:
+- `display` is a UI engine object.
+- The old code stored it as a global variable, which maps to `missionNamespace`.
+
+Fix:
+- `DU_Guardian_Display` is now stored/read through `uiNamespace`.
+- Do not move this display reference back to a mission/global namespace.
